@@ -18,12 +18,24 @@ changelog/changelog-master.yaml   ← punto de entrada: incluye 01_ddl → 02_dm
   01_schemas/                       CREATE SCHEMA iam
   03_tables/                        CREATE TABLE, sin FKs
   04_alter/                         FKs y demás ALTER
+  05_views/                         CREATE VIEW
   10_indexes/                       CREATE INDEX
-02_dml/00_inserts/                DML: datos de referencia (roles, permisos)
-03_dcl/00_roles, 01_grants/       DCL: usuario de BD del servicio y sus permisos
-04_tcl/02_release_tags/           Tags de versión (tagDatabase)
-05_rollbacks/                     Espejo de 01_ddl/02_dml: un .rollback.sql por cada .sql
+02_dml/                           DML
+  00_inserts/                       datos de referencia (roles, permisos)
+  01_updates/                       backfills y correcciones de datos
+  02_deletes/                       eliminación de datos
+03_dcl/                           DCL
+  00_roles/                         usuario de BD del servicio
+  01_grants/                        permisos sobre el schema iam
+04_tcl/                           TCL
+  02_release_tags/                  tags de versión (tagDatabase)
+05_rollbacks/                     espejo de 01_ddl … 03_dcl: un .rollback.sql por cada .sql
 ```
+
+Todas estas carpetas existen aunque estén vacías: una carpeta sin changesets tiene
+`databaseChangeLog: []` en su `changelog.yaml` (y `.gitkeep` en su espejo de `05_rollbacks`).
+Los huecos en la numeración son a propósito — el porqué de cada carpeta que no existe está en
+`rtm-docs/06-data/migration-strategy.md`.
 
 Cada carpeta hoja tiene:
 - `NNN_descripcion.sql` — el SQL real (dialecto SQL Server).

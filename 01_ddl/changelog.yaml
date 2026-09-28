@@ -9,5 +9,8 @@ databaseChangeLog:
       file: 04_alter/changelog.yaml
       relativeToChangelogFile: true
   - include:
+      file: 05_views/changelog.yaml
+      relativeToChangelogFile: true
+  - include:
       file: 10_indexes/changelog.yaml
       relativeToChangelogFile: true
