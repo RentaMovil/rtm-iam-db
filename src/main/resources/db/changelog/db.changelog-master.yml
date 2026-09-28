@@ -1,0 +1,16 @@
+# Master changelog for the IAM tables (person, user, role, permission, role_permission,
+# verification_code, session) in the shared rentamovil database.
+#
+# Rules (see rtm-docs/06-data/migration-strategy.md):
+# - Forward-only: a changeset that ran in any environment is never edited; write a new file.
+# - changes/ -> structural changes, NNN-description.xml
+# - seed/    -> reference data, SNNN-description.xml (runs after changes/)
+databaseChangeLog:
+  - includeAll:
+      path: db/changelog/changes/
+      endsWithFilter: .xml
+      errorIfMissingOrEmpty: false
+  - includeAll:
+      path: db/changelog/seed/
+      endsWithFilter: .xml
+      errorIfMissingOrEmpty: false
