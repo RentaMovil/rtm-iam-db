@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_create_schema_iam
+      author: Thiago
+      comment: Creates the iam schema that holds every table owned by the iam service.
+      changes:
+        - sqlFile:
+            path: 001_create_schema_iam.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/01_schemas/001_create_schema_iam.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

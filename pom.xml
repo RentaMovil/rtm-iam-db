@@ -27,8 +27,8 @@
                 <configuration>
                     <!-- Connection values live in liquibase.properties (not versioned, see liquibase.properties.example) -->
                     <propertyFile>liquibase.properties</propertyFile>
-                    <searchPath>${project.basedir},${project.basedir}/src/main/resources</searchPath>
-                    <changeLogFile>db/changelog/db.changelog-master.yml</changeLogFile>
+                    <searchPath>${project.basedir}</searchPath>
+                    <changeLogFile>changelog/changelog-master.yaml</changeLogFile>
                     <!-- Own history tables so IAM never collides with other services' changelogs in rentamovil -->
                     <databaseChangeLogTableName>DATABASECHANGELOG_IAM</databaseChangeLogTableName>
                     <databaseChangeLogLockTableName>DATABASECHANGELOGLOCK_IAM</databaseChangeLogLockTableName>
