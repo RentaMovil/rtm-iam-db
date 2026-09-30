@@ -1,1 +1,75 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: 001_add_fks_user
+      author: thiagxrg
+      comment: Adds FKs iam.[user] -> iam.person and iam.role.
+      changes:
+        - sqlFile:
+            path: 001_add_fks_user.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/001_add_fks_user.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 002_add_fks_role_permission
+      author: thiagxrg
+      comment: Adds FKs iam.role_permission -> iam.role and iam.permission.
+      changes:
+        - sqlFile:
+            path: 002_add_fks_role_permission.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/002_add_fks_role_permission.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 003_add_fk_verification_code
+      author: thiagxrg
+      comment: Adds FK iam.verification_code -> iam.[user].
+      changes:
+        - sqlFile:
+            path: 003_add_fk_verification_code.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/003_add_fk_verification_code.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 004_add_fk_session
+      author: thiagxrg
+      comment: Adds FK iam.session -> iam.[user].
+      changes:
+        - sqlFile:
+            path: 004_add_fk_session.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/004_add_fk_session.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 005_add_uq_person_email
+      author: thiagxrg
+      comment: Makes iam.person.email unique at database level (login identifier).
+      changes:
+        - sqlFile:
+            path: 005_add_uq_person_email.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/005_add_uq_person_email.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
