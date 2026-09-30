@@ -1,0 +1,1 @@
+DELETE FROM iam.role WHERE name IN ('CLIENT', 'ADMIN', 'SUPER_ADMIN');

@@ -1,1 +1,45 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: 001_insert_roles
+      author: thiagxrg
+      comment: Seeds the 3 fixed roles.
+      changes:
+        - sqlFile:
+            path: 001_insert_roles.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/02_dml/00_inserts/001_insert_roles.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 002_insert_permissions
+      author: thiagxrg
+      comment: Seeds the full permission catalog (security-policy.md).
+      changes:
+        - sqlFile:
+            path: 002_insert_permissions.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/02_dml/00_inserts/002_insert_permissions.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 003_insert_role_permissions
+      author: thiagxrg
+      comment: Assigns permissions to each role (cumulative, SUPER_ADMIN ⊇ ADMIN ⊇ CLIENT).
+      changes:
+        - sqlFile:
+            path: 003_insert_role_permissions.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/02_dml/00_inserts/003_insert_role_permissions.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
