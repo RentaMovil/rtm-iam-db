@@ -73,3 +73,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/04_alter/005_add_uq_person_email.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 006_add_fk_audit_user
+      author: thiagxrg
+      comment: Adds FK shared.audit -> iam.[user].
+      changes:
+        - sqlFile:
+            path: 006_add_fk_audit_user.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/006_add_fk_audit_user.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
