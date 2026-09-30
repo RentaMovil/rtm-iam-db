@@ -3,3 +3,7 @@
 url=jdbc:sqlserver://localhost:1433;databaseName=rentamovil;encrypt=true;trustServerCertificate=true
 username=sa
 password=ChangeMe_Local123!
+
+# Password for the iam_app database user created in 03_dcl (the one rtm-iam connects with).
+# Must satisfy SQL Server's password policy; use a different value per environment.
+parameter.iamAppPassword=ChangeMe_IamApp123!

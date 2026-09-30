@@ -53,7 +53,8 @@ Cada carpeta hoja tiene:
 # 1. Configuración local (una sola vez)
 cp .env.example .env
 cp liquibase.properties.example liquibase.properties
-# edita la contraseña en los dos archivos (deben coincidir)
+# edita la contraseña de sa en los dos archivos (deben coincidir)
+# y pon en liquibase.properties una contraseña para iam_app (parameter.iamAppPassword)
 
 # 2. Levantar SQL Server y crear la base rentamovil
 docker compose up -d
@@ -75,6 +76,18 @@ mvn liquibase:rollback -Dliquibase.rollbackCount=1   # deshace el último change
 docker compose down                                  # detiene SQL Server (los datos quedan)
 docker compose down -v                               # detiene y BORRA los datos
 ```
+
+## Usuario de base de datos del servicio (`03_dcl`)
+
+Las migraciones corren con `sa`. El servicio `rtm-iam` **nunca** usa `sa`: se conecta con
+`iam_app`, que solo puede leer y escribir datos del schema `iam` (sin DDL, sin acceso a otros
+schemas ni a `dbo`). Su contraseña **no está en el repo**: sale de `parameter.iamAppPassword` en
+`liquibase.properties` (git-ignored). Si falta, el changeset falla a propósito.
+
+> Al usar parámetros, el plugin de Maven imprime un `NoSuchFieldException: The field
+> 'parameter.iamAppPassword' could not be found...` con stack trace. Es inofensivo: el plugin
+> intenta leerlo como opción propia y después lo usa correctamente como parámetro. Lo que importa
+> es el `BUILD SUCCESS` final.
 
 ## Ramas
 
