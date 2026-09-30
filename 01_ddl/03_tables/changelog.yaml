@@ -97,3 +97,17 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/03_tables/007_create_table_session.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+  - changeSet:
+      id: 008_create_table_audit
+      author: thiagxrg
+      comment: Creates shared.audit. FK to iam.[user] is added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 008_create_table_audit.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/008_create_table_audit.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

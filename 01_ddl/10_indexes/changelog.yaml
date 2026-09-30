@@ -28,3 +28,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/10_indexes/002_create_index_verification_code_user_id_type.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 003_create_index_audit_affected_table_record_id
+      author: thiagxrg
+      comment: Speeds up reading one record's audit history.
+      changes:
+        - sqlFile:
+            path: 003_create_index_audit_affected_table_record_id.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/10_indexes/003_create_index_audit_affected_table_record_id.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
