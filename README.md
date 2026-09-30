@@ -89,6 +89,26 @@ schemas ni a `dbo`). Su contraseña **no está en el repo**: sale de `parameter.
 > intenta leerlo como opción propia y después lo usa correctamente como parámetro. Lo que importa
 > es el `BUILD SUCCESS` final.
 
+## Primer SUPER_ADMIN de cada entorno (paso manual, una sola vez)
+
+Solo un `SUPER_ADMIN` puede dar roles, y el registro público (`POST /register`) siempre crea
+`CLIENT`. En una base nueva nadie puede llegar a `SUPER_ADMIN`, así que el primero se crea a mano:
+
+1. La persona que será administradora se registra normalmente en `rtm-iam` (`POST /register`).
+2. Alguien con acceso `sa` a la base ejecuta, **una sola vez por entorno**:
+
+```sql
+UPDATE iam.[user]
+SET role_id = (SELECT role_id FROM iam.role WHERE name = 'SUPER_ADMIN')
+WHERE username = '<su_username>';
+```
+
+3. Esa persona cierra sesión y vuelve a entrar: el token nuevo ya trae el rol `SUPER_ADMIN` y sus
+   25 permisos. Desde ahí, los demás roles se dan con `PATCH /users/{id}/role`.
+
+No se automatiza con un changeset a propósito: así no hay contraseñas de administrador ni hashes
+en el repositorio.
+
 ## Ramas
 
 `feat/`, `fix/`, `chore/` → PR a `develop` (Squash and Merge). Ver
