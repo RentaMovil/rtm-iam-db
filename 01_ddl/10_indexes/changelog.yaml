@@ -1,1 +1,30 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: 001_create_index_session_user_id
+      author: thiagxrg
+      comment: Speeds up listing/revoking a user's sessions.
+      changes:
+        - sqlFile:
+            path: 001_create_index_session_user_id.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/10_indexes/001_create_index_session_user_id.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 002_create_index_verification_code_user_id_type
+      author: thiagxrg
+      comment: Speeds up finding a user's current code of a given type.
+      changes:
+        - sqlFile:
+            path: 002_create_index_verification_code_user_id_type.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/10_indexes/002_create_index_verification_code_user_id_type.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

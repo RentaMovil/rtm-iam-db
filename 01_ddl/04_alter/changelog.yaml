@@ -58,3 +58,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/04_alter/004_add_fk_session.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 005_add_uq_person_email
+      author: thiagxrg
+      comment: Makes iam.person.email unique at database level (login identifier).
+      changes:
+        - sqlFile:
+            path: 005_add_uq_person_email.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/005_add_uq_person_email.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
