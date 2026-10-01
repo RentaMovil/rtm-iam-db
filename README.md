@@ -77,6 +77,33 @@ docker compose down                                  # detiene SQL Server (los d
 docker compose down -v                               # detiene y BORRA los datos
 ```
 
+## Con Docker (red compartida `rentamovil`)
+
+Cada servicio de RentaMovil tiene su propio contenedor y su propio `docker-compose.yml` en su
+repo. Todos se conectan por la red de Docker **`rentamovil`** y se encuentran por nombre
+(`sqlserver`, `iam`, `api-gateway`…). Este repo es **el primero** que se levanta:
+
+```bash
+# Una sola vez por PC
+docker network create rentamovil
+
+# SQL Server + crear la base + migraciones de IAM
+docker compose up -d
+```
+
+| Contenedor | Qué hace | Estado normal |
+|---|---|---|
+| `rentamovil-sqlserver` | El servidor SQL Server (alias `sqlserver` en la red) | `Up (healthy)` |
+| `sqlserver-init` | Crea la base `rentamovil` si no existe | `Exited (0)` |
+| `migrations` | Corre las migraciones de este repo (igual que `mvn liquibase:update`) | `Exited (0)` |
+
+`migrations` usa la imagen del `Dockerfile` de este repo (Liquibase 5.0.4 + el mismo driver del
+`pom.xml`): Docker y Maven son intercambiables sobre la misma base. En el `.env` hace falta
+`IAM_APP_PASSWORD` (el mismo valor que `parameter.iamAppPassword`).
+
+Orden para levantar todo: **rtm-iam-db → rtm-iam → rtm-api-gateway** (`docker compose up -d` en
+cada uno).
+
 ## Usuario de base de datos del servicio (`03_dcl`)
 
 Las migraciones corren con `sa`. El servicio `rtm-iam` **nunca** usa `sa`: se conecta con
