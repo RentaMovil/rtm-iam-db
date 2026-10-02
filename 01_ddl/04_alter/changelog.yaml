@@ -88,3 +88,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/04_alter/006_add_fk_audit_user.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 007_add_column_person_image_url
+      author: thiagxrg
+      comment: Adds iam.person.image_url (profile picture URL, optional).
+      changes:
+        - sqlFile:
+            path: 007_add_column_person_image_url.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/007_add_column_person_image_url.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
