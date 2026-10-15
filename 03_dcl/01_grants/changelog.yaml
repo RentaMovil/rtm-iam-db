@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_grant_iam_schema_to_iam_app
+      author: thiagxrg
+      comment: Grants iam_app read/write on the iam schema only.
+      changes:
+        - sqlFile:
+            path: 001_grant_iam_schema_to_iam_app.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/03_dcl/01_grants/001_grant_iam_schema_to_iam_app.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+
+  - changeSet:
+      id: 002_grant_insert_audit_to_iam_app
+      author: thiagxrg
+      comment: Lets iam_app append to shared.audit (insert only).
+      changes:
+        - sqlFile:
+            path: 002_grant_insert_audit_to_iam_app.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/03_dcl/01_grants/002_grant_insert_audit_to_iam_app.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

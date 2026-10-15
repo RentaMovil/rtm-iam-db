@@ -1,0 +1,71 @@
+# SQL Server local con la base compartida "rentamovil" + las migraciones de IAM.
+# Es el primer compose que se levanta: los demás servicios (iam, gateway, fleet...) se conectan a
+# esta base por la red de Docker "rentamovil" (crearla una vez: docker network create rentamovil).
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: rentamovil-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      MSSQL_PID: Developer
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    volumes:
+      - rentamovil-data:/var/opt/mssql
+    networks:
+      rentamovil:
+        # Los otros contenedores la encuentran con este nombre: jdbc:sqlserver://sqlserver:1433
+        aliases: [sqlserver]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # Una sola vez: crea la base rentamovil si no existe y se apaga (SQL Server no lo hace solo)
+  sqlserver-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      MSSQL_DATABASE: ${MSSQL_DATABASE:-rentamovil}
+    networks: [rentamovil]
+    entrypoint:
+      - /bin/bash
+      - -c
+      - >
+        /opt/mssql-tools18/bin/sqlcmd -C -S sqlserver -U sa -P "$$MSSQL_SA_PASSWORD"
+        -Q "IF DB_ID('$$MSSQL_DATABASE') IS NULL CREATE DATABASE [$$MSSQL_DATABASE];"
+    restart: "no"
+
+  # Una sola vez: corre las migraciones de IAM (lo mismo que "mvn liquibase:update") y se apaga.
+  # Si ya están aplicadas no hace nada. Imagen en el Dockerfile de este repo.
+  migrations:
+    build: .
+    depends_on:
+      sqlserver-init:
+        condition: service_completed_successfully
+    networks: [rentamovil]
+    command:
+      - --url=jdbc:sqlserver://sqlserver:1433;databaseName=${MSSQL_DATABASE:-rentamovil};encrypt=true;trustServerCertificate=true
+      - --username=sa
+      - --password=${MSSQL_SA_PASSWORD}
+      - --search-path=/liquibase/changelog
+      - --changelog-file=changelog/changelog-master.yaml
+      - --database-changelog-table-name=DATABASECHANGELOG_IAM
+      - --database-changelog-lock-table-name=DATABASECHANGELOGLOCK_IAM
+      - update
+      - -DiamAppPassword=${IAM_APP_PASSWORD}
+    restart: "no"
+
+volumes:
+  rentamovil-data:
+
+networks:
+  # Red compartida por todos los servicios de RentaMovil, cada uno desde su propio repo
+  rentamovil:
+    external: true

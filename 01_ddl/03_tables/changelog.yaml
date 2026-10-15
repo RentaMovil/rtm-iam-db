@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_create_table_person
+      author: thiagxrg
+      comment: Creates iam.person.
+      changes:
+        - sqlFile:
+            path: 001_create_table_person.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/001_create_table_person.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 002_create_table_role
+      author: thiagxrg
+      comment: Creates iam.role.
+      changes:
+        - sqlFile:
+            path: 002_create_table_role.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/002_create_table_role.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 003_create_table_permission
+      author: thiagxrg
+      comment: Creates iam.permission.
+      changes:
+        - sqlFile:
+            path: 003_create_table_permission.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/003_create_table_permission.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 004_create_table_user
+      author: thiagxrg
+      comment: Creates iam.[user]. FKs to person and role are added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 004_create_table_user.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/004_create_table_user.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 005_create_table_role_permission
+      author: thiagxrg
+      comment: Creates iam.role_permission (N:M role-permission). FKs are added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 005_create_table_role_permission.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/005_create_table_role_permission.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 006_create_table_verification_code
+      author: thiagxrg
+      comment: Creates iam.verification_code. FK to user is added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 006_create_table_verification_code.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/006_create_table_verification_code.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 007_create_table_session
+      author: thiagxrg
+      comment: Creates iam.session (refresh tokens). FK to user is added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 007_create_table_session.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/007_create_table_session.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 008_create_table_audit
+      author: thiagxrg
+      comment: Creates shared.audit. FK to iam.[user] is added in 04_alter.
+      changes:
+        - sqlFile:
+            path: 008_create_table_audit.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/008_create_table_audit.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
