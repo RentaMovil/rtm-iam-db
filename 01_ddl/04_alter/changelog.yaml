@@ -103,3 +103,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/04_alter/007_add_column_person_image_url.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 008_alter_ck_user_status
+      author: thiagxrg
+      comment: Adds PENDING_VERIFICATION to the user status CHECK (HU-IAM-001, email verification).
+      changes:
+        - sqlFile:
+            path: 008_alter_ck_user_status.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/008_alter_ck_user_status.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
