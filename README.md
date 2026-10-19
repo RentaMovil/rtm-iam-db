@@ -97,6 +97,20 @@ docker compose up -d
 | `sqlserver-init` | Crea la base `rentamovil` si no existe | `Exited (0)` |
 | `migrations` | Corre las migraciones de este repo (igual que `mvn liquibase:update`) | `Exited (0)` |
 
+`rentamovil-sqlserver` es el **único** contenedor de la plataforma con datos persistentes, y es el
+primero que tiene que levantarse: los microservicios validan el esquema contra él al arrancar
+(`spring.jpa.hibernate.ddl-auto=validate`), así que si la base no está arriba fallan. Por eso lleva
+`restart: unless-stopped`, igual que el resto de servicios: sin esa política, un reinicio del VPS
+dejaba la base apagada mientras todos los demás contenedores volvían solos.
+
+Para comprobar que el motor está disponible antes de levantar o reiniciar cualquier otra cosa:
+
+```bash
+docker ps --filter name=rentamovil-sqlserver   # debe decir Up (healthy)
+docker network inspect rentamovil --format '{{range .Containers}}{{.Name}} {{end}}'
+#   -> debe incluir rentamovil-sqlserver
+```
+
 `migrations` usa la imagen del `Dockerfile` de este repo (Liquibase 5.0.4 + el mismo driver del
 `pom.xml`): Docker y Maven son intercambiables sobre la misma base. En el `.env` hace falta
 `IAM_APP_PASSWORD` (el mismo valor que `parameter.iamAppPassword`).
