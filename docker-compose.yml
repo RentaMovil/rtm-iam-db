@@ -5,6 +5,12 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: rentamovil-sqlserver
+    # Sin esta política el motor de base de datos NO vuelve solo después de un
+    # reinicio del VPS, mientras que el resto de servicios (que sí la tienen)
+    # sí: la plataforma completa arrancaba sin base de datos y todos los que
+    # validan el esquema al inicio (fleet-maintenance) entraban en bucle de
+    # reinicio. El motor es lo primero que tiene que levantarse.
+    restart: unless-stopped
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
