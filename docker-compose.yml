@@ -1,9 +1,13 @@
 # SQL Server local con la base compartida "rentamovil" + las migraciones de IAM.
 # Es el primer compose que se levanta: los demás servicios (iam, gateway, fleet...) se conectan a
 # esta base por la red de Docker "rentamovil" (crearla una vez: docker network create rentamovil).
+#
+# Tag fijo (no "2022-latest"): la misma imagen en todas las máquinas, en vez de lo que
+# Microsoft tenga publicado ese día. Corresponde al build que resolvía "2022-latest" al
+# fijarlo (SQL Server 16.0.4255.1).
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-CU27-GDR1-ubuntu-22.04
     container_name: rentamovil-sqlserver
     # Sin esta política el motor de base de datos NO vuelve solo después de un
     # reinicio del VPS, mientras que el resto de servicios (que sí la tienen)
@@ -32,7 +36,7 @@ services:
 
   # Una sola vez: crea la base rentamovil si no existe y se apaga (SQL Server no lo hace solo)
   sqlserver-init:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-CU27-GDR1-ubuntu-22.04
     depends_on:
       sqlserver:
         condition: service_healthy
