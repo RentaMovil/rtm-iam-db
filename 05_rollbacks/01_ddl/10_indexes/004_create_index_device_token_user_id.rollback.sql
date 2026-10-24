@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS ix_device_token_user_id ON iam.device_token;
