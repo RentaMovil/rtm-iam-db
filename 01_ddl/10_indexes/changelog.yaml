@@ -43,3 +43,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/10_indexes/003_create_index_audit_affected_table_record_id.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 004_create_index_device_token_user_id
+      author: thiagxrg
+      comment: Speeds up GET /internal/users/{id}/push-tokens.
+      changes:
+        - sqlFile:
+            path: 004_create_index_device_token_user_id.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/10_indexes/004_create_index_device_token_user_id.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

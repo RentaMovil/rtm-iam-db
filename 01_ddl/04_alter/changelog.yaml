@@ -118,3 +118,18 @@ databaseChangeLog:
             path: ../../05_rollbacks/01_ddl/04_alter/008_alter_ck_user_status.rollback.sql
             relativeToChangelogFile: true
             stripComments: false
+
+  - changeSet:
+      id: 009_add_fk_device_token_user
+      author: thiagxrg
+      comment: Adds device_token.user_id -> iam.[user].
+      changes:
+        - sqlFile:
+            path: 009_add_fk_device_token_user.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/009_add_fk_device_token_user.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
