@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+jobs:
+  validate-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create the shared Docker network
+        run: docker network create rentamovil
+
+      # Spins up a throwaway SQL Server and applies this repo's Liquibase changelog against it,
+      # the same way docker-compose.yml is used for a real deploy. If a changeset is broken (bad
+      # SQL, a missing rollback, a changelog that doesn't parse) this job fails before merge
+      # instead of only being discovered on the VPS. rtm-iam-db is the only *-db repo that starts
+      # its own SQL Server, so this workflow doesn't need any other repo checked out.
+      - name: Apply Liquibase migrations against a throwaway SQL Server
+        env:
+          MSSQL_SA_PASSWORD: "CiOnly_${{ github.run_id }}!"
+          IAM_APP_PASSWORD: "CiOnly_App123!"
+        run: docker compose up --build --abort-on-container-exit --exit-code-from migrations
