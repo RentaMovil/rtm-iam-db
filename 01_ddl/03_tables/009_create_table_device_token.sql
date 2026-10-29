@@ -1,6 +1,3 @@
--- Token de Expo Push de un dispositivo (POST /users/me/push-token). UNIQUE en token: si el mismo
--- dispositivo vuelve a registrarse (reinstalo la app, otro usuario inicio sesion ahi), la capa de
--- aplicacion actualiza la fila en vez de duplicarla.
 CREATE TABLE iam.device_token (
     device_token_id INT IDENTITY(1,1) NOT NULL,
     user_id         INT               NOT NULL,

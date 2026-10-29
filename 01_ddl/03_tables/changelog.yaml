@@ -113,8 +113,8 @@ databaseChangeLog:
             stripComments: false
   - changeSet:
       id: 009_create_table_device_token
-      author: thiagxrg
-      comment: Creates iam.device_token (Expo Push tokens). FK to user is added in 04_alter.
+      author: david-erez
+      comment: Creates iam.device_token (mobile push tokens, HU de notificaciones push). FK to user is added in 04_alter.
       changes:
         - sqlFile:
             path: 009_create_table_device_token.sql

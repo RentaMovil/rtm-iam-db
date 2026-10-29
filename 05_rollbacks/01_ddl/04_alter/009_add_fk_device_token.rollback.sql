@@ -1,0 +1,1 @@
+ALTER TABLE iam.device_token DROP CONSTRAINT IF EXISTS fk_device_token_user;
