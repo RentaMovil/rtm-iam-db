@@ -46,8 +46,8 @@ databaseChangeLog:
 
   - changeSet:
       id: 004_create_index_device_token_user_id
-      author: thiagxrg
-      comment: Speeds up GET /internal/users/{id}/push-tokens.
+      author: david-erez
+      comment: Speeds up listing a user's registered push-notification devices.
       changes:
         - sqlFile:
             path: 004_create_index_device_token_user_id.sql
